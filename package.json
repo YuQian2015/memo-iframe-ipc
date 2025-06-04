@@ -1,6 +1,5 @@
 {
-  "name": "@aim-package/iframe-ipc",
-  "private": true,
+  "name": "@aim-packages/iframe-ipc",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.es.js",
