@@ -120,11 +120,12 @@ export interface WorkspaceModel {
 }
 
 export interface DocModel {
-  id?: number;
+  id?: number | string;
   title: string;
   localFilename: string;
-  workspaceId: number;
-  noteId?: number;
+  workspaceId: number | string;
+  noteId?: number | string;
+  folderId?: number | string;
   icon?: string;
   thumbnail?: string;
   description?: string;
@@ -498,6 +499,20 @@ export interface BridgeInterface {
     url: string
     query: Record<string, string>
   }
+}
+
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface ChatRequest {
+  messages: ChatMessage[];
+  prompt?: string;
+  model?: string;
+  temperature?: number;
+  provider?: string;
+  uuid?: string;
 }
 
 export interface IElectronAPI extends BridgeInterface {
