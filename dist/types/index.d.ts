@@ -472,9 +472,4 @@ export interface IElectronAPI extends BridgeInterface {
     handleWindowMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
     removeWindowHandler: (name?: string) => Promise<void>;
 }
-declare global {
-    interface Window {
-        AIM: IElectronAPI;
-    }
-}
 export {};
