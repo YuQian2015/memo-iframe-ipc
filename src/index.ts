@@ -27,8 +27,8 @@ export class Bridge implements Partial<IElectronAPI> {
       "memoryStorage.setItem",
       "memoryStorage.getItem",
       "memoryStorage.clear",
-      "windowPostMessage", // 窗口之间发送消息
-      "openChildWindow", // 打开子窗口
+      "browser.windowPostMessage", // 窗口之间发送消息
+      "browser.openChildWindow", // 打开子窗口
     ],
     appId: "memo-app",
   }
