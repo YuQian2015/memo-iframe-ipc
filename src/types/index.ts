@@ -539,35 +539,27 @@ export interface ChatRequest {
 }
 
 export interface IElectronAPI extends BridgeInterface {
-  isMac: boolean, isWindows: boolean, isLinux: boolean,
-  platform: 'win32' | 'darwin' | 'linux',
-
+  isMac: boolean;
+  isWindows: boolean;
+  isLinux: boolean;
+  platform: 'win32' | 'darwin' | 'linux';
   localStorage: {
-    setItem: (key: string, value: string) => Promise<void>
-    getItem: (key: string) => Promise<string>
-    removeItem: (key: string) => Promise<void>
-    clear: () => Promise<void>
-  }
-  memoryStorage: {
-    setItem: (key: string, value: any) => Promise<void>
-    getItem: (key: string) => Promise<any>
-    removeItem: (key: string) => Promise<void>
+    setItem: (key: string, value: string) => Promise<void>;
+    getItem: (key: string) => Promise<string>;
+    removeItem: (key: string) => Promise<void>;
     clear: () => Promise<void>;
-  }
-
+  };
+  memoryStorage: {
+    setItem: (key: string, value: any) => Promise<void>;
+    getItem: (key: string) => Promise<any>;
+    removeItem: (key: string) => Promise<void>;
+    clear: () => Promise<void>;
+  };
   browser: {
     windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
-  }
-
-  handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>
-  removeHandler: (name?: string) => Promise<void>
-
-  handleWindowMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>
-  removeWindowHandler: (name?: string) => Promise<void>
-}
-
-declare global {
-  interface Window {
-    AIM: IElectronAPI
-  }
+  };
+  handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
+  removeHandler: (name?: string) => Promise<void>;
+  handleWindowMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
+  removeWindowHandler: (name?: string) => Promise<void>;
 }

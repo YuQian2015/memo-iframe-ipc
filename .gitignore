@@ -24,4 +24,5 @@ dist-ssr
 
 pnpm-lock.yaml
 
+dist/
 aim-package-iframe-ipc-*.tgz

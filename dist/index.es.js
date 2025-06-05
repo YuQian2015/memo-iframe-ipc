@@ -17,7 +17,7 @@ var c = (l, e, s) => new Promise((t, a) => {
   }, i = (r) => r.done ? t(r.value) : Promise.resolve(r.value).then(o, n);
   i((s = s.apply(l, e)).next());
 });
-class f {
+class w {
   constructor(e) {
     d(this, "windowMessageHandler", {});
     d(this, "messageHandler", {});
@@ -38,9 +38,9 @@ class f {
         "memoryStorage.setItem",
         "memoryStorage.getItem",
         "memoryStorage.clear",
-        "windowPostMessage",
+        "browser.windowPostMessage",
         // 窗口之间发送消息
-        "openChildWindow"
+        "browser.openChildWindow"
         // 打开子窗口
       ],
       appId: "memo-app"
@@ -126,5 +126,5 @@ class f {
   }
 }
 export {
-  f as Bridge
+  w as Bridge
 };

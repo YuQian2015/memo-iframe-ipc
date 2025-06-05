@@ -294,6 +294,12 @@ export interface MessageData<T extends Message = Message> {
     type: T['type'];
     data: T['data'];
 }
+type GenerateUnionType<T extends string> = `window:${T}:req` | `window:${T}:res`;
+export type WindowPostMessage = {
+    type: GenerateUnionType<"player:screenshot"> | GenerateUnionType<"player:timestamp"> | GenerateUnionType<"view:pin"> | GenerateUnionType<"view:unpin"> | GenerateUnionType<"view:mini"> | GenerateUnionType<"view:normal"> | GenerateUnionType<"player:play"> | GenerateUnionType<"player:pause"> | GenerateUnionType<"player:seek"> | GenerateUnionType<"child:data"> | GenerateUnionType<"child:exec">;
+    data: any;
+    appId?: string;
+};
 export interface IMetadata {
     chapters: Array<any>;
     format: Record<string, any>;
@@ -457,6 +463,9 @@ export interface IElectronAPI extends BridgeInterface {
         getItem: (key: string) => Promise<any>;
         removeItem: (key: string) => Promise<void>;
         clear: () => Promise<void>;
+    };
+    browser: {
+        windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
     };
     handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
     removeHandler: (name?: string) => Promise<void>;
