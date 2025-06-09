@@ -1,6 +1,7 @@
 import { MessageData, IElectronAPI } from "@/types";
 
 export class Bridge implements Partial<IElectronAPI> {
+  [key: string]: any;  // 添加索引签名
 
   private windowMessageHandler: Record<string, (event: any, data: MessageData) => any> = {}
   private messageHandler: Record<string, (event: any, data: MessageData) => any> = {}
@@ -146,6 +147,36 @@ export class Bridge implements Partial<IElectronAPI> {
       success, error
     }
     window.parent.postMessage({ from: `renderer:${this.options.appId}`, action: 'IPC_REQUEST', data: { callbackId: this.callbackId, method, params } }, '*')
+  }
+
+  player = {
+    play: () => {
+      return new Promise<void>((resolve, reject) => {
+        this.browser?.windowPostMessage({
+          type: 'window:player:play:req',
+          data: {}
+        })
+        resolve()
+      })
+    },
+    pause: () => {
+      return new Promise<void>((resolve, reject) => {
+        this.browser?.windowPostMessage({
+          type: 'window:player:pause:req',
+          data: {}
+        })
+        resolve()
+      })
+    },
+    seek: (time: number) => {
+      return new Promise<void>((resolve, reject) => {
+        this.browser?.windowPostMessage({
+          type: 'window:player:seek:req',
+          data: { time }
+        })
+        resolve()
+      })
+    }
   }
 
   async handleMessage(handleFunction: (event: any, data: MessageData) => any, name: string) {

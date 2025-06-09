@@ -576,6 +576,19 @@ export interface IElectronAPI extends BridgeInterface {
   browser: {
     windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
   };
+  player: {
+    play: () => Promise<void>;
+    pause: () => Promise<void>;
+    seek: (time: number) => Promise<void>;
+    // getCurrentTime: () => Promise<number>;
+    // getDuration: () => Promise<number>;
+    // getVolume: () => Promise<number>;
+    // setVolume: (volume: number) => Promise<void>;
+    // getMute: () => Promise<boolean>;
+    // setMute: (mute: boolean) => Promise<void>;
+    // getPlaybackRate: () => Promise<number>;
+    // setPlaybackRate: (rate: number) => Promise<void>;
+  },
   handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
   removeHandler: (name?: string) => Promise<void>;
   handleWindowMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
