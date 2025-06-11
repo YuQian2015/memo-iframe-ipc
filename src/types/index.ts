@@ -87,17 +87,18 @@ export interface ITranscriptFile {
 }
 
 export interface NoteModel {
-  id?: number;
+  id?: number | string;
   uuid: string;
   filename: string;
   hasAudio: boolean;
   hasVideo: boolean;
   filePath: string;
-  content: string;
   metadata: string;
   convertResult: string;
   translateResult?: string;
+  multiTranslateResult?: string;
   status: NoteStatus;
+  workspaceId?: number | string;
   downloadUrl?: string;
   downloadType?: DownloadPlatform;
   transcodeAudio?: boolean; // 是否已经转换过音频
@@ -106,6 +107,9 @@ export interface NoteModel {
   audioPath?: string;
   videoPath?: string;
   thumbnail?: any;
+  summary?: string;
+  mindmap?: string;
+  folderId?: number | string;
   canplayVideo?: boolean;
   created_at?: string | null;
   updated_at?: string | null;
@@ -138,31 +142,6 @@ export interface DownloadModel {
   trackLang?: string;
   trackData?: string;
   transcriptSettings?: string;
-  created_at?: string | null;
-  updated_at?: string | null;
-}
-
-export interface NoteModel {
-  id?: number;
-  uuid: string;
-  filename: string;
-  hasAudio: boolean;
-  hasVideo: boolean;
-  filePath: string;
-  content: string;
-  metadata: string;
-  convertResult: string;
-  translateResult?: string;
-  status: 'downloading' | 'ready' | 'waiting' | 'processing' | 'canceled' | 'success' | 'delete';
-  downloadUrl?: string;
-  downloadType?: DownloadPlatform;
-  transcodeAudio?: boolean; // 是否已经转换过音频
-  transcriptSettings?: string;
-  ogFilename?: string;
-  audioPath?: string;
-  videoPath?: string;
-  thumbnail?: any;
-  canplayVideo?: boolean;
   created_at?: string | null;
   updated_at?: string | null;
 }

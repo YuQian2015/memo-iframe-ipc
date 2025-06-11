@@ -1,34 +1,35 @@
 var m = Object.defineProperty;
-var g = (l, e, s) => e in l ? m(l, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : l[e] = s;
-var d = (l, e, s) => g(l, typeof e != "symbol" ? e + "" : e, s);
+var w = (l, e, s) => e in l ? m(l, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : l[e] = s;
+var n = (l, e, s) => w(l, typeof e != "symbol" ? e + "" : e, s);
 var c = (l, e, s) => new Promise((t, a) => {
-  var o = (r) => {
+  var r = (o) => {
     try {
-      i(s.next(r));
+      i(s.next(o));
     } catch (h) {
       a(h);
     }
-  }, n = (r) => {
+  }, d = (o) => {
     try {
-      i(s.throw(r));
+      i(s.throw(o));
     } catch (h) {
       a(h);
     }
-  }, i = (r) => r.done ? t(r.value) : Promise.resolve(r.value).then(o, n);
+  }, i = (o) => o.done ? t(o.value) : Promise.resolve(o.value).then(r, d);
   i((s = s.apply(l, e)).next());
 });
-class w {
+class g {
   constructor(e) {
-    d(this, "windowMessageHandler", {});
-    d(this, "messageHandler", {});
-    d(this, "callbackId", 1);
-    d(this, "callbacks", {});
-    d(this, "isIframe", !0);
-    d(this, "source", {
+    // 添加索引签名
+    n(this, "windowMessageHandler", {});
+    n(this, "messageHandler", {});
+    n(this, "callbackId", 1);
+    n(this, "callbacks", {});
+    n(this, "isIframe", !0);
+    n(this, "source", {
       url: "",
       query: {}
     });
-    d(this, "defaultOptions", {
+    n(this, "defaultOptions", {
       methods: [
         "localStorage.removeItem",
         "localStorage.setItem",
@@ -45,7 +46,32 @@ class w {
       ],
       appId: "memo-app"
     });
-    d(this, "options");
+    n(this, "options");
+    n(this, "player", {
+      play: () => new Promise((e) => {
+        var s;
+        (s = this.browser) == null || s.windowPostMessage({
+          type: "window:player:play:req",
+          data: {}
+        }), e();
+      }),
+      pause: () => new Promise((e) => {
+        var s;
+        (s = this.browser) == null || s.windowPostMessage({
+          type: "window:player:pause:req",
+          data: {}
+        }), e();
+      })
+      // seek: (time: number) => {
+      //   return new Promise<void>((resolve) => {
+      //     this.browser?.windowPostMessage({
+      //       type: 'window:player:seek:req',
+      //       data: { time }
+      //     })
+      //     resolve()
+      //   })
+      // }
+    });
     this.options = {
       methods: [...this.defaultOptions.methods, ...e.methods || []],
       appId: e.appId || this.defaultOptions.appId
@@ -56,30 +82,30 @@ class w {
       const { from: s, action: t, params: a } = e.data;
       if (s === `main:${this.options.appId}`) {
         if (t === "IPC_RESPONSE_SEND")
-          for (const o in this.windowMessageHandler)
-            this.windowMessageHandler[o](a.event, a.data);
+          for (const r in this.windowMessageHandler)
+            this.windowMessageHandler[r](a.event, a.data);
         if (t === "IPC_RESPONSE") {
-          const { callbackId: o, success: n, params: i } = e.data;
-          this.callbacks[o] && (n ? this.callbacks[o].success(i.data) : this.callbacks[o].error(i.error), delete this.callbacks[o]);
+          const { callbackId: r, success: d, params: i } = e.data;
+          this.callbacks[r] && (d ? this.callbacks[r].success(i.data) : this.callbacks[r].error(i.error), delete this.callbacks[r]);
         }
         if (t === "IPC_RESPONSE_SEND_MESSAGE")
-          for (const o in this.messageHandler)
-            this.messageHandler[o](a.event, a.data);
+          for (const r in this.messageHandler)
+            this.messageHandler[r](a.event, a.data);
       }
     }), this.addMethods(this.options.methods);
   }
   getQueryParams(e) {
     const s = {}, t = e.match(/\?([^#]+)/);
     if (t) {
-      const o = t[1], n = new URLSearchParams(o);
-      for (const [i, r] of n.entries())
-        s[i] = r;
+      const r = t[1], d = new URLSearchParams(r);
+      for (const [i, o] of d.entries())
+        s[i] = o;
     }
     const a = e.match(/#.*\?(.+)/);
     if (a) {
-      const o = a[1], n = new URLSearchParams(o);
-      for (const [i, r] of n.entries())
-        s[i] = r;
+      const r = a[1], d = new URLSearchParams(r);
+      for (const [i, o] of d.entries())
+        s[i] = o;
     }
     return s;
   }
@@ -88,8 +114,8 @@ class w {
     let t = this;
     for (let a = 0; a < s.length - 1; a++)
       t[s[a]] || (t[s[a]] = {}), t = t[s[a]];
-    t[s[s.length - 1]] = (...a) => new Promise((o, n) => {
-      this.callMain(e, a, o, n);
+    t[s[s.length - 1]] = (...a) => new Promise((r, d) => {
+      this.callMain(e, a, r, d);
     });
   }
   addMethods(e) {
@@ -126,5 +152,5 @@ class w {
   }
 }
 export {
-  w as Bridge
+  g as Bridge
 };
