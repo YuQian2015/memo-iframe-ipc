@@ -26,6 +26,66 @@ export interface WhisperSegments {
   cut?: boolean
 }
 
+// downloading 等待下载中
+// ready 选择文件完成，已经获取元信息
+// waiting 转换设置完成，等待开始转换
+// processing 转写中
+// canceled 已经取消转换
+// success 转换成功
+// delete 已删除
+export type NoteStatus =
+  | "downloading"
+  | "ready"
+  | "waiting"
+  | "processing"
+  | "canceled"
+  | "success"
+  | "delete";
+
+export interface ITranscriptFile {
+  id?: number | string;
+  uuid: string;
+  filename: string;
+  hasAudio: boolean;
+  hasVideo: boolean;
+  hasThumb?: boolean; // 音频文件是否存在封面图
+  filePath: string;
+  metadata: IMetadata;
+  ogFilename?: string;
+  audioPath?: string;
+  videoPath?: string;
+  mp3Path?: string;
+  thumbnail?: string;
+  canplayVideo?: boolean;
+  convertResult?: WhisperSegments[];
+  status: NoteStatus;
+  workspaceId?: number | string;
+  downloadUrl?: string;
+  downloadType?: DownloadPlatform;
+  transcodeAudio?: boolean; // 是否已经转换过音频
+  transcriptSettings?: ITranscriptSetting;
+  summary?: { content: string; st: string }[];
+  mindmap?: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+  translateResult?: WhisperSegments[];
+  folderId?: number | string;
+  multiTranslateResult?: {
+    translateOrder: Array<string>;
+    translateResult: Record<
+      string,
+      {
+        enable: boolean;
+        label: string;
+        value: string;
+        language: string;
+        result: WhisperSegments[];
+      }
+    >;
+  };
+  _temp?: boolean;
+}
+
 export interface NoteModel {
   id?: number;
   uuid: string;
@@ -37,7 +97,7 @@ export interface NoteModel {
   metadata: string;
   convertResult: string;
   translateResult?: string;
-  status: 'downloading' | 'ready' | 'waiting' | 'processing' | 'canceled' | 'success' | 'delete';
+  status: NoteStatus;
   downloadUrl?: string;
   downloadType?: DownloadPlatform;
   transcodeAudio?: boolean; // 是否已经转换过音频
@@ -538,6 +598,30 @@ export interface ChatRequest {
   uuid?: string;
 }
 
+export interface ControllerRequestData<T extends { id?: number | string }> {
+  find: Partial<T>
+  create: Partial<T> | Partial<T>[]
+  update: RequiredByKey<Partial<T>, "id">
+  detail: RequiredByKey<Partial<T>, "id">
+  delete: RequiredByKey<Partial<T>, "id">
+  remove: RequiredByKey<Partial<T>, "id">
+  backup: Partial<T>
+  batchDelete: RequiredByKey<Partial<T>, "id">[]
+  batchUpdate: RequiredByKey<Partial<T>, "id">[]
+}
+
+export interface ControllerResponseData<T> {
+  find: T[]
+  create: T[]
+  update: T[]
+  detail: T
+  delete: T
+  remove: T
+  backup: T[]
+  batchDelete: number | T[]
+  batchUpdate: number
+}
+
 export interface IElectronAPI extends BridgeInterface {
   isMac: boolean;
   isWindows: boolean;
@@ -562,6 +646,10 @@ export interface IElectronAPI extends BridgeInterface {
     clear: (pluginId?: string) => Promise<void>;
     keys: (pluginId?: string) => Promise<string[]>;
   }
+  transcriptionData: <T extends keyof ControllerRequestData<NoteModel>>(
+    method: T,
+    data: ControllerRequestData<NoteModel>[T],
+  ) => Promise<ControllerResponseData<NoteModel>[T]>;
   chat: {
     chat: (data: ChatRequest) => Promise<string>;
     getProviders: () => Promise<{

@@ -464,6 +464,24 @@ export interface IElectronAPI extends BridgeInterface {
         removeItem: (key: string) => Promise<void>;
         clear: () => Promise<void>;
     };
+    storage: {
+        setItem: (key: string, value: any, pluginId?: string) => Promise<void>;
+        getItem: (key: string, pluginId?: string) => Promise<any>;
+        removeItem: (key: string, pluginId?: string) => Promise<void>;
+        clear: (pluginId?: string) => Promise<void>;
+        keys: (pluginId?: string) => Promise<string[]>;
+    };
+    chat: {
+        chat: (data: ChatRequest) => Promise<string>;
+        getProviders: () => Promise<{
+            value: string;
+            label: string;
+        }[]>;
+        getModels: (provider: string) => Promise<{
+            value: string;
+            label: string;
+        }[]>;
+    };
     browser: {
         windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
     };
