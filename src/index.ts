@@ -151,7 +151,7 @@ export class Bridge implements Partial<IElectronAPI> {
 
   player = {
     play: () => {
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve) => {
         this.browser?.windowPostMessage({
           type: 'window:player:play:req',
           data: {}
@@ -160,7 +160,7 @@ export class Bridge implements Partial<IElectronAPI> {
       })
     },
     pause: () => {
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve) => {
         this.browser?.windowPostMessage({
           type: 'window:player:pause:req',
           data: {}
@@ -168,15 +168,15 @@ export class Bridge implements Partial<IElectronAPI> {
         resolve()
       })
     },
-    seek: (time: number) => {
-      return new Promise<void>((resolve, reject) => {
-        this.browser?.windowPostMessage({
-          type: 'window:player:seek:req',
-          data: { time }
-        })
-        resolve()
-      })
-    }
+    // seek: (time: number) => {
+    //   return new Promise<void>((resolve) => {
+    //     this.browser?.windowPostMessage({
+    //       type: 'window:player:seek:req',
+    //       data: { time }
+    //     })
+    //     resolve()
+    //   })
+    // }
   }
 
   async handleMessage(handleFunction: (event: any, data: MessageData) => any, name: string) {
