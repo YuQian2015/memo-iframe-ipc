@@ -640,6 +640,19 @@ export interface IElectronAPI extends BridgeInterface {
       label: string;
     }[]>;
   };
+  file: {
+    checkPluginFileExist: (filename: string) => Promise<boolean>;
+    savePluginFile: (data: {
+      filename: string, // 包含后缀
+      data: Buffer | string | any
+      isBase64?: boolean
+      open?: boolean
+    }) => Promise<boolean>;
+    readPluginFile: (data: {
+      filename: string, // 包含后缀
+      encode?: BufferEncoding
+    }) => Promise<string | Buffer>;
+  },
   browser: {
     windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
   };

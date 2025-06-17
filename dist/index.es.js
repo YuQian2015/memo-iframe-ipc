@@ -1,35 +1,35 @@
 var m = Object.defineProperty;
-var w = (l, e, s) => e in l ? m(l, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : l[e] = s;
-var n = (l, e, s) => w(l, typeof e != "symbol" ? e + "" : e, s);
-var c = (l, e, s) => new Promise((t, a) => {
+var g = (d, e, s) => e in d ? m(d, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : d[e] = s;
+var i = (d, e, s) => g(d, typeof e != "symbol" ? e + "" : e, s);
+var c = (d, e, s) => new Promise((t, a) => {
   var r = (o) => {
     try {
-      i(s.next(o));
+      n(s.next(o));
     } catch (h) {
       a(h);
     }
-  }, d = (o) => {
+  }, l = (o) => {
     try {
-      i(s.throw(o));
+      n(s.throw(o));
     } catch (h) {
       a(h);
     }
-  }, i = (o) => o.done ? t(o.value) : Promise.resolve(o.value).then(r, d);
-  i((s = s.apply(l, e)).next());
+  }, n = (o) => o.done ? t(o.value) : Promise.resolve(o.value).then(r, l);
+  n((s = s.apply(d, e)).next());
 });
-class g {
+class w {
   constructor(e) {
     // 添加索引签名
-    n(this, "windowMessageHandler", {});
-    n(this, "messageHandler", {});
-    n(this, "callbackId", 1);
-    n(this, "callbacks", {});
-    n(this, "isIframe", !0);
-    n(this, "source", {
+    i(this, "windowMessageHandler", {});
+    i(this, "messageHandler", {});
+    i(this, "callbackId", 1);
+    i(this, "callbacks", {});
+    i(this, "isIframe", !0);
+    i(this, "source", {
       url: "",
       query: {}
     });
-    n(this, "defaultOptions", {
+    i(this, "defaultOptions", {
       methods: [
         "localStorage.removeItem",
         "localStorage.setItem",
@@ -39,6 +39,11 @@ class g {
         "memoryStorage.setItem",
         "memoryStorage.getItem",
         "memoryStorage.clear",
+        "storage.removeItem",
+        "storage.setItem",
+        "storage.getItem",
+        "storage.clear",
+        "storage.keys",
         "browser.windowPostMessage",
         // 窗口之间发送消息
         "browser.openChildWindow"
@@ -46,8 +51,18 @@ class g {
       ],
       appId: "memo-app"
     });
-    n(this, "options");
-    n(this, "player", {
+    i(this, "withAppIdKeys", [
+      "storage.removeItem",
+      "storage.setItem",
+      "storage.getItem",
+      "storage.clear",
+      "storage.keys",
+      "file.savePluginFile",
+      "file.readPluginFile",
+      "file.checkPluginFileExist"
+    ]);
+    i(this, "options");
+    i(this, "player", {
       play: () => new Promise((e) => {
         var s;
         (s = this.browser) == null || s.windowPostMessage({
@@ -85,8 +100,8 @@ class g {
           for (const r in this.windowMessageHandler)
             this.windowMessageHandler[r](a.event, a.data);
         if (t === "IPC_RESPONSE") {
-          const { callbackId: r, success: d, params: i } = e.data;
-          this.callbacks[r] && (d ? this.callbacks[r].success(i.data) : this.callbacks[r].error(i.error), delete this.callbacks[r]);
+          const { callbackId: r, success: l, params: n } = e.data;
+          this.callbacks[r] && (l ? this.callbacks[r].success(n.data) : this.callbacks[r].error(n.error), delete this.callbacks[r]);
         }
         if (t === "IPC_RESPONSE_SEND_MESSAGE")
           for (const r in this.messageHandler)
@@ -97,15 +112,15 @@ class g {
   getQueryParams(e) {
     const s = {}, t = e.match(/\?([^#]+)/);
     if (t) {
-      const r = t[1], d = new URLSearchParams(r);
-      for (const [i, o] of d.entries())
-        s[i] = o;
+      const r = t[1], l = new URLSearchParams(r);
+      for (const [n, o] of l.entries())
+        s[n] = o;
     }
     const a = e.match(/#.*\?(.+)/);
     if (a) {
-      const r = a[1], d = new URLSearchParams(r);
-      for (const [i, o] of d.entries())
-        s[i] = o;
+      const r = a[1], l = new URLSearchParams(r);
+      for (const [n, o] of l.entries())
+        s[n] = o;
     }
     return s;
   }
@@ -114,9 +129,9 @@ class g {
     let t = this;
     for (let a = 0; a < s.length - 1; a++)
       t[s[a]] || (t[s[a]] = {}), t = t[s[a]];
-    t[s[s.length - 1]] = (...a) => new Promise((r, d) => {
-      this.callMain(e, a, r, d);
-    });
+    t[s[s.length - 1]] = (...a) => (this.withAppIdKeys.includes(e) && a.push(this.options.appId), new Promise((r, l) => {
+      this.callMain(e, a, r, l);
+    }));
   }
   addMethods(e) {
     for (const s of e)
@@ -152,5 +167,5 @@ class g {
   }
 }
 export {
-  g as Bridge
+  w as Bridge
 };

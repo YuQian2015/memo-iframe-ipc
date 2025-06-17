@@ -1,6 +1,6 @@
 {
   "name": "@aim-packages/iframe-ipc",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "type": "module",
   "main": "dist/index.es.js",
   "types": "dist/index.d.ts",

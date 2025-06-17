@@ -11,6 +11,7 @@ export declare class Bridge implements Partial<IElectronAPI> {
         query: Record<string, string>;
     };
     private defaultOptions;
+    private withAppIdKeys;
     options: {
         methods: string[];
         appId: string;

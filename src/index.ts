@@ -45,6 +45,9 @@ export class Bridge implements Partial<IElectronAPI> {
     "storage.getItem",
     "storage.clear",
     "storage.keys",
+    "file.savePluginFile",
+    "file.readPluginFile",
+    "file.checkPluginFileExist"
   ]
 
   options: {

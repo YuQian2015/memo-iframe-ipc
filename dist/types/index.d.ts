@@ -66,17 +66,18 @@ export interface ITranscriptFile {
     _temp?: boolean;
 }
 export interface NoteModel {
-    id?: number;
+    id?: number | string;
     uuid: string;
     filename: string;
     hasAudio: boolean;
     hasVideo: boolean;
     filePath: string;
-    content: string;
     metadata: string;
     convertResult: string;
     translateResult?: string;
+    multiTranslateResult?: string;
     status: NoteStatus;
+    workspaceId?: number | string;
     downloadUrl?: string;
     downloadType?: DownloadPlatform;
     transcodeAudio?: boolean;
@@ -85,6 +86,9 @@ export interface NoteModel {
     audioPath?: string;
     videoPath?: string;
     thumbnail?: any;
+    summary?: string;
+    mindmap?: string;
+    folderId?: number | string;
     canplayVideo?: boolean;
     created_at?: string | null;
     updated_at?: string | null;
@@ -114,30 +118,6 @@ export interface DownloadModel {
     trackLang?: string;
     trackData?: string;
     transcriptSettings?: string;
-    created_at?: string | null;
-    updated_at?: string | null;
-}
-export interface NoteModel {
-    id?: number;
-    uuid: string;
-    filename: string;
-    hasAudio: boolean;
-    hasVideo: boolean;
-    filePath: string;
-    content: string;
-    metadata: string;
-    convertResult: string;
-    translateResult?: string;
-    status: 'downloading' | 'ready' | 'waiting' | 'processing' | 'canceled' | 'success' | 'delete';
-    downloadUrl?: string;
-    downloadType?: DownloadPlatform;
-    transcodeAudio?: boolean;
-    transcriptSettings?: string;
-    ogFilename?: string;
-    audioPath?: string;
-    videoPath?: string;
-    thumbnail?: any;
-    canplayVideo?: boolean;
     created_at?: string | null;
     updated_at?: string | null;
 }
@@ -533,11 +513,11 @@ export interface IElectronAPI extends BridgeInterface {
         clear: () => Promise<void>;
     };
     storage: {
-        setItem: (key: string, value: any, pluginId?: string) => Promise<void>;
-        getItem: (key: string, pluginId?: string) => Promise<any>;
-        removeItem: (key: string, pluginId?: string) => Promise<void>;
-        clear: (pluginId?: string) => Promise<void>;
-        keys: (pluginId?: string) => Promise<string[]>;
+        setItem: (key: string, value: any) => Promise<void>;
+        getItem: (key: string) => Promise<any>;
+        removeItem: (key: string) => Promise<void>;
+        clear: () => Promise<void>;
+        keys: () => Promise<string[]>;
     };
     transcriptionData: <T extends keyof ControllerRequestData<NoteModel>>(method: T, data: ControllerRequestData<NoteModel>[T]) => Promise<ControllerResponseData<NoteModel>[T]>;
     chat: {
@@ -550,6 +530,19 @@ export interface IElectronAPI extends BridgeInterface {
             value: string;
             label: string;
         }[]>;
+    };
+    file: {
+        checkPluginFileExist: (filename: string) => Promise<boolean>;
+        savePluginFile: (data: {
+            filename: string;
+            data: Buffer | string | any;
+            isBase64?: boolean;
+            open?: boolean;
+        }) => Promise<boolean>;
+        readPluginFile: (data: {
+            filename: string;
+            encode?: BufferEncoding;
+        }) => Promise<string | Buffer>;
     };
     browser: {
         windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
