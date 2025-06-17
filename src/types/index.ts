@@ -619,11 +619,11 @@ export interface IElectronAPI extends BridgeInterface {
     clear: () => Promise<void>;
   };
   storage: {
-    setItem: (key: string, value: any, pluginId?: string) => Promise<void>
-    getItem: (key: string, pluginId?: string) => Promise<any>
-    removeItem: (key: string, pluginId?: string) => Promise<void>
-    clear: (pluginId?: string) => Promise<void>;
-    keys: (pluginId?: string) => Promise<string[]>;
+    setItem: (key: string, value: any) => Promise<void>
+    getItem: (key: string) => Promise<any>
+    removeItem: (key: string) => Promise<void>
+    clear: () => Promise<void>;
+    keys: () => Promise<string[]>;
   }
   transcriptionData: <T extends keyof ControllerRequestData<NoteModel>>(
     method: T,

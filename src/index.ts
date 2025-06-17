@@ -28,11 +28,24 @@ export class Bridge implements Partial<IElectronAPI> {
       "memoryStorage.setItem",
       "memoryStorage.getItem",
       "memoryStorage.clear",
+      "storage.removeItem",
+      "storage.setItem",
+      "storage.getItem",
+      "storage.clear",
+      "storage.keys",
       "browser.windowPostMessage", // 窗口之间发送消息
       "browser.openChildWindow", // 打开子窗口
     ],
     appId: "memo-app",
   }
+
+  private withAppIdKeys = [
+    "storage.removeItem",
+    "storage.setItem",
+    "storage.getItem",
+    "storage.clear",
+    "storage.keys",
+  ]
 
   options: {
     methods: string[]
@@ -124,6 +137,9 @@ export class Bridge implements Partial<IElectronAPI> {
     }
 
     current[parts[parts.length - 1]] = (...arg: any[]) => {
+      if (this.withAppIdKeys.includes(path)) {
+        arg.push(this.options.appId)
+      }
       return new Promise((resolve, reject) => {
         this.callMain(path, arg, resolve, reject)
       })
