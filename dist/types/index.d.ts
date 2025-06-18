@@ -495,6 +495,79 @@ export interface ControllerResponseData<T> {
     batchDelete: number | T[];
     batchUpdate: number;
 }
+export declare const LANGUAGE_MAP: {
+    readonly af_heart: "a";
+    readonly af_alloy: "a";
+    readonly af_aoede: "a";
+    readonly af_bella: "a";
+    readonly af_jessica: "a";
+    readonly af_kore: "a";
+    readonly af_nicole: "a";
+    readonly af_nova: "a";
+    readonly af_river: "a";
+    readonly af_sarah: "a";
+    readonly af_sky: "a";
+    readonly am_adam: "a";
+    readonly am_echo: "a";
+    readonly am_eric: "a";
+    readonly am_fenrir: "a";
+    readonly am_liam: "a";
+    readonly am_michael: "a";
+    readonly am_onyx: "a";
+    readonly am_puck: "a";
+    readonly am_santa: "a";
+    readonly bf_alice: "b";
+    readonly bf_emma: "b";
+    readonly bf_isabella: "b";
+    readonly bf_lily: "b";
+    readonly bm_daniel: "b";
+    readonly bm_fable: "b";
+    readonly bm_george: "b";
+    readonly bm_lewis: "b";
+    readonly jf_alpha: "j";
+    readonly jf_gongitsune: "j";
+    readonly jf_nezumi: "j";
+    readonly jf_tebukuro: "j";
+    readonly jm_kumo: "j";
+    readonly zf_xiaobei: "z";
+    readonly zf_xiaoni: "z";
+    readonly zf_xiaoxiao: "z";
+    readonly zf_xiaoyi: "z";
+    readonly zm_yunjian: "z";
+    readonly zm_yunxi: "z";
+    readonly zm_yunxia: "z";
+    readonly zm_yunyang: "z";
+    readonly ef_dora: "e";
+    readonly em_alex: "e";
+    readonly em_santa: "e";
+    readonly ff_siwis: "f";
+    readonly hf_alpha: "h";
+    readonly hf_beta: "h";
+    readonly hm_omega: "h";
+    readonly hm_psi: "h";
+    readonly if_sara: "i";
+    readonly im_nicola: "i";
+    readonly pf_dora: "p";
+    readonly pm_alex: "p";
+    readonly pm_santa: "p";
+};
+export type KokoroVoice = keyof typeof LANGUAGE_MAP;
+export interface KokoroSynthesizeParams {
+    text: string;
+    voice: KokoroVoice;
+    speed: number;
+    textList?: Array<{
+        text: string;
+        voice: KokoroVoice;
+        speed: number;
+    }>;
+    outputFile?: string;
+    device?: "cuda" | "cpu" | "mps";
+    localModel?: string;
+    localConfig?: string;
+    mpsFallback?: boolean;
+    returnBuffer?: boolean;
+}
 export interface IElectronAPI extends BridgeInterface {
     isMac: boolean;
     isWindows: boolean;
@@ -543,6 +616,12 @@ export interface IElectronAPI extends BridgeInterface {
             filename: string;
             encode?: BufferEncoding;
         }) => Promise<string | Buffer>;
+    };
+    tts: {
+        kokoroSynthesize: (data: KokoroSynthesizeParams) => Promise<{
+            success: boolean;
+            data: Buffer | string;
+        }>;
     };
     browser: {
         windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;

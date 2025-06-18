@@ -601,6 +601,110 @@ export interface ControllerResponseData<T> {
   batchUpdate: number
 }
 
+// 语言代码映射
+export const LANGUAGE_MAP = {
+  // 美式英语 (American English)
+  // 女性声音
+  af_heart: "a",    // 🚺❤️ Target Quality: A
+  af_alloy: "a",    // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  af_aoede: "a",    // 🚺 Target Quality: B, Training: H hours, Grade: C+
+  af_bella: "a",    // 🚺🔥 Target Quality: A, Training: HH hours, Grade: A-
+  af_jessica: "a",  // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  af_kore: "a",     // 🚺 Target Quality: B, Training: H hours, Grade: C+
+  af_nicole: "a",   // 🚺🎧 Target Quality: B, Training: HH hours, Grade: B-
+  af_nova: "a",     // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  af_river: "a",    // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  af_sarah: "a",    // 🚺 Target Quality: B, Training: H hours, Grade: C+
+  af_sky: "a",      // 🚺 Target Quality: B, Training: M minutes, Grade: C-
+  // 男性声音
+  am_adam: "a",     // 🚹 Target Quality: D, Training: H hours, Grade: F+
+  am_echo: "a",     // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  am_eric: "a",     // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  am_fenrir: "a",   // 🚹 Target Quality: B, Training: H hours, Grade: C+
+  am_liam: "a",     // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  am_michael: "a",  // 🚹 Target Quality: B, Training: H hours, Grade: C+
+  am_onyx: "a",     // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  am_puck: "a",     // 🚹 Target Quality: B, Training: H hours, Grade: C+
+  am_santa: "a",    // 🚹 Target Quality: C, Training: M minutes, Grade: D-
+
+  // 英式英语 (British English)
+  // 女性声音
+  bf_alice: "b",    // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  bf_emma: "b",     // 🚺 Target Quality: B, Training: HH hours, Grade: B-
+  bf_isabella: "b", // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  bf_lily: "b",     // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  // 男性声音
+  bm_daniel: "b",   // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  bm_fable: "b",    // 🚹 Target Quality: B, Training: MM minutes, Grade: C
+  bm_george: "b",   // 🚹 Target Quality: B, Training: MM minutes, Grade: C
+  bm_lewis: "b",    // 🚹 Target Quality: C, Training: H hours, Grade: D+
+
+  // 日语 (Japanese)
+  // 女性声音
+  jf_alpha: "j",    // 🚺 Target Quality: B, Training: H hours, Grade: C+
+  jf_gongitsune: "j", // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  jf_nezumi: "j",   // 🚺 Target Quality: B, Training: M minutes, Grade: C-
+  jf_tebukuro: "j", // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  // 男性声音
+  jm_kumo: "j",     // 🚹 Target Quality: B, Training: M minutes, Grade: C-
+
+  // 中文 (Mandarin Chinese)
+  // 女性声音
+  zf_xiaobei: "z",  // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  zf_xiaoni: "z",   // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  zf_xiaoxiao: "z", // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  zf_xiaoyi: "z",   // 🚺 Target Quality: C, Training: MM minutes, Grade: D
+  // 男性声音
+  zm_yunjian: "z",  // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  zm_yunxi: "z",    // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  zm_yunxia: "z",   // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+  zm_yunyang: "z",  // 🚹 Target Quality: C, Training: MM minutes, Grade: D
+
+  // 西班牙语 (Spanish)
+  ef_dora: "e",     // 🚺 Spanish female voice
+  em_alex: "e",     // 🚹 Spanish male voice
+  em_santa: "e",    // 🚹 Spanish male voice
+
+  // 法语 (French)
+  ff_siwis: "f",    // 🚺 Target Quality: B, Training: <11 hours, Grade: B-
+
+  // 印地语 (Hindi)
+  hf_alpha: "h",    // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  hf_beta: "h",     // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  hm_omega: "h",    // 🚹 Target Quality: B, Training: MM minutes, Grade: C
+  hm_psi: "h",      // 🚹 Target Quality: B, Training: MM minutes, Grade: C
+
+  // 意大利语 (Italian)
+  if_sara: "i",     // 🚺 Target Quality: B, Training: MM minutes, Grade: C
+  im_nicola: "i",   // 🚹 Target Quality: B, Training: MM minutes, Grade: C
+
+  // 巴西葡萄牙语 (Brazilian Portuguese)
+  pf_dora: "p",     // 🚺 Brazilian Portuguese female voice
+  pm_alex: "p",     // 🚹 Brazilian Portuguese male voice
+  pm_santa: "p"     // 🚹 Brazilian Portuguese male voice
+} as const;
+
+// 声音类型定义
+// https://huggingface.co/hexgrad/Kokoro-82M/blob/main/VOICES.md#american-english
+export type KokoroVoice = keyof typeof LANGUAGE_MAP;
+
+export interface KokoroSynthesizeParams {
+  text: string;
+  voice: KokoroVoice;
+  speed: number;
+  textList?: Array<{
+      text: string;
+      voice: KokoroVoice;
+      speed: number;
+  }>;
+  outputFile?: string;
+  device?: "cuda" | "cpu" | "mps";
+  localModel?: string;
+  localConfig?: string;
+  mpsFallback?: boolean;
+  returnBuffer?: boolean;
+}
+
 export interface IElectronAPI extends BridgeInterface {
   isMac: boolean;
   isWindows: boolean;
@@ -652,6 +756,9 @@ export interface IElectronAPI extends BridgeInterface {
       filename: string, // 包含后缀
       encode?: BufferEncoding
     }) => Promise<string | Buffer>;
+  },
+  tts: {
+    kokoroSynthesize: (data: KokoroSynthesizeParams) => Promise<{ success: boolean, data: Buffer | string }>;
   },
   browser: {
     windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
