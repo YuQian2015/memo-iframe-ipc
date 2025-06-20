@@ -25,10 +25,6 @@ export declare class Bridge implements Partial<IElectronAPI> {
     private addMethod;
     private addMethods;
     private callMain;
-    player: {
-        play: () => Promise<void>;
-        pause: () => Promise<void>;
-    };
     handleMessage(handleFunction: (event: any, data: MessageData) => any, name: string): Promise<void>;
     removeHandler(name?: string): Promise<void>;
     handleWindowMessage(handleFunction: (event: any, data: MessageData) => any, name: string): Promise<void>;

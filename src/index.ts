@@ -33,6 +33,13 @@ export class Bridge implements Partial<IElectronAPI> {
       "storage.getItem",
       "storage.clear",
       "storage.keys",
+      "player.play",
+      "player.pause",
+      "player.seek",
+      "player.seekForward",
+      "player.seekBackward",
+      "player.getCurrentTime",
+      "player.screenshot",
       "browser.windowPostMessage", // 窗口之间发送消息
       "browser.openChildWindow", // 打开子窗口
     ],
@@ -166,36 +173,6 @@ export class Bridge implements Partial<IElectronAPI> {
       success, error
     }
     window.parent.postMessage({ from: `renderer:${this.options.appId}`, action: 'IPC_REQUEST', data: { callbackId: this.callbackId, method, params } }, '*')
-  }
-
-  player = {
-    play: () => {
-      return new Promise<void>((resolve) => {
-        this.browser?.windowPostMessage({
-          type: 'window:player:play:req',
-          data: {}
-        })
-        resolve()
-      })
-    },
-    pause: () => {
-      return new Promise<void>((resolve) => {
-        this.browser?.windowPostMessage({
-          type: 'window:player:pause:req',
-          data: {}
-        })
-        resolve()
-      })
-    },
-    // seek: (time: number) => {
-    //   return new Promise<void>((resolve) => {
-    //     this.browser?.windowPostMessage({
-    //       type: 'window:player:seek:req',
-    //       data: { time }
-    //     })
-    //     resolve()
-    //   })
-    // }
   }
 
   async handleMessage(handleFunction: (event: any, data: MessageData) => any, name: string) {

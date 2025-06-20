@@ -1,35 +1,35 @@
 var m = Object.defineProperty;
 var g = (d, e, s) => e in d ? m(d, e, { enumerable: !0, configurable: !0, writable: !0, value: s }) : d[e] = s;
-var i = (d, e, s) => g(d, typeof e != "symbol" ? e + "" : e, s);
+var l = (d, e, s) => g(d, typeof e != "symbol" ? e + "" : e, s);
 var c = (d, e, s) => new Promise((t, a) => {
   var r = (o) => {
     try {
-      n(s.next(o));
+      i(s.next(o));
     } catch (h) {
       a(h);
     }
-  }, l = (o) => {
+  }, n = (o) => {
     try {
-      n(s.throw(o));
+      i(s.throw(o));
     } catch (h) {
       a(h);
     }
-  }, n = (o) => o.done ? t(o.value) : Promise.resolve(o.value).then(r, l);
-  n((s = s.apply(d, e)).next());
+  }, i = (o) => o.done ? t(o.value) : Promise.resolve(o.value).then(r, n);
+  i((s = s.apply(d, e)).next());
 });
-class w {
+class u {
   constructor(e) {
     // 添加索引签名
-    i(this, "windowMessageHandler", {});
-    i(this, "messageHandler", {});
-    i(this, "callbackId", 1);
-    i(this, "callbacks", {});
-    i(this, "isIframe", !0);
-    i(this, "source", {
+    l(this, "windowMessageHandler", {});
+    l(this, "messageHandler", {});
+    l(this, "callbackId", 1);
+    l(this, "callbacks", {});
+    l(this, "isIframe", !0);
+    l(this, "source", {
       url: "",
       query: {}
     });
-    i(this, "defaultOptions", {
+    l(this, "defaultOptions", {
       methods: [
         "localStorage.removeItem",
         "localStorage.setItem",
@@ -44,6 +44,13 @@ class w {
         "storage.getItem",
         "storage.clear",
         "storage.keys",
+        "player.play",
+        "player.pause",
+        "player.seek",
+        "player.seekForward",
+        "player.seekBackward",
+        "player.getCurrentTime",
+        "player.screenshot",
         "browser.windowPostMessage",
         // 窗口之间发送消息
         "browser.openChildWindow"
@@ -51,7 +58,7 @@ class w {
       ],
       appId: "memo-app"
     });
-    i(this, "withAppIdKeys", [
+    l(this, "withAppIdKeys", [
       "storage.removeItem",
       "storage.setItem",
       "storage.getItem",
@@ -61,32 +68,7 @@ class w {
       "file.readPluginFile",
       "file.checkPluginFileExist"
     ]);
-    i(this, "options");
-    i(this, "player", {
-      play: () => new Promise((e) => {
-        var s;
-        (s = this.browser) == null || s.windowPostMessage({
-          type: "window:player:play:req",
-          data: {}
-        }), e();
-      }),
-      pause: () => new Promise((e) => {
-        var s;
-        (s = this.browser) == null || s.windowPostMessage({
-          type: "window:player:pause:req",
-          data: {}
-        }), e();
-      })
-      // seek: (time: number) => {
-      //   return new Promise<void>((resolve) => {
-      //     this.browser?.windowPostMessage({
-      //       type: 'window:player:seek:req',
-      //       data: { time }
-      //     })
-      //     resolve()
-      //   })
-      // }
-    });
+    l(this, "options");
     this.options = {
       methods: [...this.defaultOptions.methods, ...e.methods || []],
       appId: e.appId || this.defaultOptions.appId
@@ -100,8 +82,8 @@ class w {
           for (const r in this.windowMessageHandler)
             this.windowMessageHandler[r](a.event, a.data);
         if (t === "IPC_RESPONSE") {
-          const { callbackId: r, success: l, params: n } = e.data;
-          this.callbacks[r] && (l ? this.callbacks[r].success(n.data) : this.callbacks[r].error(n.error), delete this.callbacks[r]);
+          const { callbackId: r, success: n, params: i } = e.data;
+          this.callbacks[r] && (n ? this.callbacks[r].success(i.data) : this.callbacks[r].error(i.error), delete this.callbacks[r]);
         }
         if (t === "IPC_RESPONSE_SEND_MESSAGE")
           for (const r in this.messageHandler)
@@ -112,15 +94,15 @@ class w {
   getQueryParams(e) {
     const s = {}, t = e.match(/\?([^#]+)/);
     if (t) {
-      const r = t[1], l = new URLSearchParams(r);
-      for (const [n, o] of l.entries())
-        s[n] = o;
+      const r = t[1], n = new URLSearchParams(r);
+      for (const [i, o] of n.entries())
+        s[i] = o;
     }
     const a = e.match(/#.*\?(.+)/);
     if (a) {
-      const r = a[1], l = new URLSearchParams(r);
-      for (const [n, o] of l.entries())
-        s[n] = o;
+      const r = a[1], n = new URLSearchParams(r);
+      for (const [i, o] of n.entries())
+        s[i] = o;
     }
     return s;
   }
@@ -129,8 +111,8 @@ class w {
     let t = this;
     for (let a = 0; a < s.length - 1; a++)
       t[s[a]] || (t[s[a]] = {}), t = t[s[a]];
-    t[s[s.length - 1]] = (...a) => (this.withAppIdKeys.includes(e) && a.push(this.options.appId), new Promise((r, l) => {
-      this.callMain(e, a, r, l);
+    t[s[s.length - 1]] = (...a) => (this.withAppIdKeys.includes(e) && a.push(this.options.appId), new Promise((r, n) => {
+      this.callMain(e, a, r, n);
     }));
   }
   addMethods(e) {
@@ -167,5 +149,5 @@ class w {
   }
 }
 export {
-  w as Bridge
+  u as Bridge
 };

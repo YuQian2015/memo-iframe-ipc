@@ -629,6 +629,11 @@ export interface IElectronAPI extends BridgeInterface {
     player: {
         play: () => Promise<void>;
         pause: () => Promise<void>;
+        seek: (time: number) => Promise<void>;
+        seekForward: (seconds: number) => Promise<void>;
+        seekBackward: (seconds: number) => Promise<void>;
+        getCurrentTime: () => Promise<number>;
+        screenshot: () => Promise<string>;
     };
     handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
     removeHandler: (name?: string) => Promise<void>;
