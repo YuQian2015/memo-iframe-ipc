@@ -568,6 +568,13 @@ export interface KokoroSynthesizeParams {
     mpsFallback?: boolean;
     returnBuffer?: boolean;
 }
+export interface PlayParams {
+    timeRanges: {
+        start: number;
+        end: number;
+    }[];
+    loopCount: number;
+}
 export interface IElectronAPI extends BridgeInterface {
     isMac: boolean;
     isWindows: boolean;
@@ -627,11 +634,11 @@ export interface IElectronAPI extends BridgeInterface {
         windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
     };
     player: {
-        play: () => Promise<void>;
+        play: (params?: PlayParams) => Promise<void>;
         pause: () => Promise<void>;
         seek: (time: number) => Promise<void>;
-        seekForward: (seconds: number) => Promise<void>;
-        seekBackward: (seconds: number) => Promise<void>;
+        seekForward: (seconds?: number) => Promise<void>;
+        seekBackward: (seconds?: number) => Promise<void>;
         getCurrentTime: () => Promise<number>;
         screenshot: () => Promise<string>;
     };
