@@ -713,6 +713,8 @@ export interface PlayParams {
   loopCount: number; // 0 表示永久循环
 }
 
+export type ExtensionNames = 'spleeter' | 'kokoro' | 'pyannote'
+
 export interface IElectronAPI extends BridgeInterface {
   isMac: boolean;
   isWindows: boolean;
@@ -787,6 +789,9 @@ export interface IElectronAPI extends BridgeInterface {
     // getPlaybackRate: () => Promise<number>;
     // setPlaybackRate: (rate: number) => Promise<void>;
   },
+  extension: {
+    checkExtensionExists: (name?: ExtensionNames) => Promise<Record<ExtensionNames, boolean>>;
+  }
   handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
   removeHandler: (name?: string) => Promise<void>;
   handleWindowMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;

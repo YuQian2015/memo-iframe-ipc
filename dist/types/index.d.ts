@@ -575,6 +575,7 @@ export interface PlayParams {
     }[];
     loopCount: number;
 }
+export type ExtensionNames = 'spleeter' | 'kokoro' | 'pyannote';
 export interface IElectronAPI extends BridgeInterface {
     isMac: boolean;
     isWindows: boolean;
@@ -641,6 +642,9 @@ export interface IElectronAPI extends BridgeInterface {
         seekBackward: (seconds?: number) => Promise<void>;
         getCurrentTime: () => Promise<number>;
         screenshot: () => Promise<string>;
+    };
+    extension: {
+        checkExtensionExists: (name?: ExtensionNames) => Promise<Record<ExtensionNames, boolean>>;
     };
     handleMessage: (handleFunction: (event: IpcRendererEvent, data: MessageData) => any, name: string) => Promise<void>;
     removeHandler: (name?: string) => Promise<void>;
