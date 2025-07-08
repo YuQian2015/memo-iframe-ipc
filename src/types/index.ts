@@ -736,6 +736,35 @@ export type LocaleFileData = {
   currentLanguageData: Record<string, LocaleFile>;
 };
 
+export type AllChatModels = {
+  providers: Array<{
+    provider: string;
+    label: string;
+    models: Array<{
+      value: string;
+      label: string;
+      description: string;
+      price: number;
+      currency: string;
+      uint: string;
+      maxContextToken: number;
+      maxOutputToken: number;
+    }>;
+  }>;
+  flatModels: Array<{
+    value: string;
+    label: string;
+    description: string;
+    price: number;
+    currency: string;
+    uint: string;
+    maxContextToken: number;
+    maxOutputToken: number;
+    provider: string;
+    providerLabel: string;
+  }>;
+}
+
 export interface IElectronAPI extends BridgeInterface {
   isMac: boolean;
   isWindows: boolean;
@@ -774,6 +803,7 @@ export interface IElectronAPI extends BridgeInterface {
       value: string;
       label: string;
     }[]>;
+    getAllModels: () => Promise<AllChatModels>;
   };
   file: {
     checkPluginFileExist: (filename: string) => Promise<boolean>;
