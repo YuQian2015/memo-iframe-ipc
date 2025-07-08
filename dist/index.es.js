@@ -51,6 +51,7 @@ class u {
         "player.seekBackward",
         "player.getCurrentTime",
         "player.screenshot",
+        "locales.getLanguage",
         "browser.windowPostMessage",
         // 窗口之间发送消息
         "browser.openChildWindow"

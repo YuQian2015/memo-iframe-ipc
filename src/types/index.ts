@@ -693,9 +693,9 @@ export interface KokoroSynthesizeParams {
   voice: KokoroVoice;
   speed: number;
   textList?: Array<{
-      text: string;
-      voice: KokoroVoice;
-      speed: number;
+    text: string;
+    voice: KokoroVoice;
+    speed: number;
   }>;
   outputFile?: string;
   device?: "cuda" | "cpu" | "mps";
@@ -714,6 +714,27 @@ export interface PlayParams {
 }
 
 export type ExtensionNames = 'spleeter' | 'kokoro' | 'pyannote'
+
+export type LocaleFile = {
+  $metadata?: {
+    for?: "localization";
+    language?: string;
+    localeName?: string;
+    author?: string;
+    version?: string;
+    description?: string;
+    keywords?: string;
+    homepage?: string;
+  };
+  [key: string]: any;
+};
+
+export type LocaleFileData = {
+  allLanguages: Record<string, LocaleFile>;
+  allLanguagesInfo: Record<string, LocaleFile["$metadata"]>;
+  currentLanguage: string;
+  currentLanguageData: Record<string, LocaleFile>;
+};
 
 export interface IElectronAPI extends BridgeInterface {
   isMac: boolean;
@@ -773,6 +794,9 @@ export interface IElectronAPI extends BridgeInterface {
   browser: {
     windowPostMessage: (data: WindowPostMessage) => () => Promise<unknown>;
   };
+  locales: {
+    getLanguage: () => Promise<LocaleFileData>,
+  },
   player: {
     play: (params?: PlayParams) => Promise<void>;
     pause: () => Promise<void>;
