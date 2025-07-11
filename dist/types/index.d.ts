@@ -648,6 +648,11 @@ export interface IElectronAPI extends BridgeInterface {
         keys: () => Promise<string[]>;
     };
     transcriptionData: <T extends keyof ControllerRequestData<NoteModel>>(method: T, data: ControllerRequestData<NoteModel>[T]) => Promise<ControllerResponseData<NoteModel>[T]>;
+    selectFile: (type?: "resource" | "model" | "image") => Promise<string[] | undefined>;
+    openDialog: (method: string, config: Record<string, any>) => Promise<string[]>;
+    common: {
+        execFFmpegCommand: (command: string, uuid?: string) => Promise<any>;
+    };
     chat: {
         chat: (data: ChatRequest) => Promise<string>;
         getProviders: () => Promise<{
@@ -684,6 +689,12 @@ export interface IElectronAPI extends BridgeInterface {
     };
     locales: {
         getLanguage: () => Promise<LocaleFileData>;
+    };
+    video: {
+        screenshots: (data: {
+            timestamps: number[];
+            transcriptFile: ITranscriptFile;
+        }) => Promise<string[]>;
     };
     player: {
         play: (params?: PlayParams) => Promise<void>;
